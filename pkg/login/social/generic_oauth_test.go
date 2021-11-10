@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-kit/log/level"
 	"github.com/inconshreveable/log15"
 	"github.com/mattn/go-isatty"
 	"github.com/stretchr/testify/require"
@@ -24,9 +25,9 @@ func getLogFormat() log15.Format {
 	return log15.LogfmtFormat()
 }
 
-func newLogger(name string, level log15.Lvl) log.Logger {
+func newLogger(name string, lev string) log.Logger {
 	logger := log.Root.New("logger", name)
-	logger.SetHandler(log15.LvlFilterHandler(level, log15.StreamHandler(os.Stdout, getLogFormat())))
+	logger.AddLogger(logger, lev, map[string]level.Option{})
 	return logger
 }
 
@@ -34,7 +35,7 @@ func TestSearchJSONForEmail(t *testing.T) {
 	t.Run("Given a generic OAuth provider", func(t *testing.T) {
 		provider := SocialGenericOAuth{
 			SocialBase: &SocialBase{
-				log: newLogger("generic_oauth_test", log15.LvlDebug),
+				log: newLogger("generic_oauth_test", "debug"),
 			},
 		}
 
@@ -122,7 +123,7 @@ func TestSearchJSONForGroups(t *testing.T) {
 	t.Run("Given a generic OAuth provider", func(t *testing.T) {
 		provider := SocialGenericOAuth{
 			SocialBase: &SocialBase{
-				log: newLogger("generic_oauth_test", log15.LvlDebug),
+				log: newLogger("generic_oauth_test", "debug"),
 			},
 		}
 
@@ -185,7 +186,7 @@ func TestSearchJSONForRole(t *testing.T) {
 	t.Run("Given a generic OAuth provider", func(t *testing.T) {
 		provider := SocialGenericOAuth{
 			SocialBase: &SocialBase{
-				log: newLogger("generic_oauth_test", log15.LvlDebug),
+				log: newLogger("generic_oauth_test", "debug"),
 			},
 		}
 
@@ -248,7 +249,7 @@ func TestUserInfoSearchesForEmailAndRole(t *testing.T) {
 	t.Run("Given a generic OAuth provider", func(t *testing.T) {
 		provider := SocialGenericOAuth{
 			SocialBase: &SocialBase{
-				log: newLogger("generic_oauth_test", log15.LvlDebug),
+				log: newLogger("generic_oauth_test", "debug"),
 			},
 			emailAttributePath: "email",
 		}
@@ -457,7 +458,7 @@ func TestUserInfoSearchesForLogin(t *testing.T) {
 	t.Run("Given a generic OAuth provider", func(t *testing.T) {
 		provider := SocialGenericOAuth{
 			SocialBase: &SocialBase{
-				log: newLogger("generic_oauth_test", log15.LvlDebug),
+				log: newLogger("generic_oauth_test", "debug"),
 			},
 			loginAttributePath: "login",
 		}
@@ -552,7 +553,7 @@ func TestUserInfoSearchesForName(t *testing.T) {
 	t.Run("Given a generic OAuth provider", func(t *testing.T) {
 		provider := SocialGenericOAuth{
 			SocialBase: &SocialBase{
-				log: newLogger("generic_oauth_test", log15.LvlDebug),
+				log: newLogger("generic_oauth_test", "debug"),
 			},
 			nameAttributePath: "name",
 		}
@@ -649,7 +650,7 @@ func TestUserInfoSearchesForName(t *testing.T) {
 func TestPayloadCompression(t *testing.T) {
 	provider := SocialGenericOAuth{
 		SocialBase: &SocialBase{
-			log: newLogger("generic_oauth_test", log15.LvlDebug),
+			log: newLogger("generic_oauth_test", "debug"),
 		},
 		emailAttributePath: "email",
 	}

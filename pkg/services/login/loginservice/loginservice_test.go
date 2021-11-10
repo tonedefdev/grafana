@@ -1,13 +1,15 @@
 package loginservice
 
 import (
+	"bytes"
 	"errors"
 	"testing"
 
+	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
 	"github.com/grafana/grafana/pkg/bus"
 	"github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/services/quota"
-	log "github.com/inconshreveable/log15"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -42,11 +44,13 @@ func Test_syncOrgRoles_doesNotBreakWhenTryingToRemoveLastOrgAdmin(t *testing.T) 
 }
 
 func Test_syncOrgRoles_whenTryingToRemoveLastOrgLogsError(t *testing.T) {
-	logs := []string{}
-	logger.SetHandler(log.FuncHandler(func(r *log.Record) error {
-		logs = append(logs, r.Msg)
-		return nil
-	}))
+	// logs := []string{}
+	// logger.SetHandler(log.FuncHandler(func(r *log.Record) error {
+	// 	logs = append(logs, r.Msg)
+	// 	return nil
+	// }))
+	buf := &bytes.Buffer{}
+	logger.AddLogger(log.NewLogfmtLogger(buf), "info", map[string]level.Option{})
 
 	user := createSimpleUser()
 	externalUser := createSimpleExternalUser()
@@ -73,7 +77,7 @@ func Test_syncOrgRoles_whenTryingToRemoveLastOrgLogsError(t *testing.T) {
 
 	err := syncOrgRoles(&user, &externalUser)
 	require.NoError(t, err)
-	assert.Contains(t, logs, models.ErrLastOrgAdmin.Error())
+	assert.Contains(t, buf, models.ErrLastOrgAdmin.Error())
 }
 
 type authInfoServiceMock struct {
