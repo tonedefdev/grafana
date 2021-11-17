@@ -891,17 +891,8 @@ func newLoader(cfg *setting.Cfg) *Loader {
 }
 
 type fakeLicensingService struct {
-	edition    string
-	hasLicense bool
-	tokenRaw   string
-}
-
-func (t *fakeLicensingService) HasLicense() bool {
-	return t.hasLicense
-}
-
-func (t *fakeLicensingService) Expiry() int64 {
-	return 0
+	edition  string
+	tokenRaw string
 }
 
 func (t *fakeLicensingService) Edition() string {
@@ -918,10 +909,6 @@ func (t *fakeLicensingService) ContentDeliveryPrefix() string {
 
 func (t *fakeLicensingService) LicenseURL(showAdminLicensingPage bool) string {
 	return ""
-}
-
-func (t *fakeLicensingService) HasValidLicense() bool {
-	return false
 }
 
 func (t *fakeLicensingService) Environment() map[string]string {
