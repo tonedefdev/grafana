@@ -664,8 +664,12 @@ def install_cypress_step():
             'CYPRESS_INSTALL_BINARY': '/tmp/Cypress',
         },
         'commands': [
-            'CYPRESS_CACHE_FOLDER=/tmp/Cypress/8.4.1/Cypress/Cypress yarn run cypress install',
+            'yarn run cypress install',
         ],
+        'volumes': [{
+            'name': 'cypress_cache',
+            'path': '/root/.cache/Cypress'
+        }],
     }
 
 def e2e_tests_step(suite, edition, port=3001, tries=None):
@@ -680,8 +684,11 @@ def e2e_tests_step(suite, edition, port=3001, tries=None):
         ],
         'environment': {
             'HOST': 'end-to-end-tests-server' + enterprise2_suffix(edition),
-            'CYPRESS_CACHE_FOLDER': '/tmp/Cypress',
         },
+        'volumes': [{
+            'name': 'cypress_cache',
+            'path': '/root/.cache/Cypress'
+        }],
         'commands': [
             cmd,
         ],
