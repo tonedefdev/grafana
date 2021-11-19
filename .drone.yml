@@ -186,8 +186,6 @@ steps:
   - yarn run cypress install
   depends_on:
   - package
-  environment:
-    CYPRESS_INSTALL_BINARY: /tmp/Cypress
   image: grafana/ci-e2e:12.19.0-1
   name: cypress
   volumes:
@@ -602,8 +600,6 @@ steps:
   - yarn run cypress install
   depends_on:
   - package
-  environment:
-    CYPRESS_INSTALL_BINARY: /tmp/Cypress
   image: grafana/ci-e2e:12.19.0-1
   name: cypress
   volumes:
@@ -1123,8 +1119,6 @@ steps:
   - yarn run cypress install
   depends_on:
   - package
-  environment:
-    CYPRESS_INSTALL_BINARY: /tmp/Cypress
   image: grafana/ci-e2e:12.19.0-1
   name: cypress
   volumes:
@@ -1598,8 +1592,6 @@ steps:
   - yarn run cypress install
   depends_on:
   - package
-  environment:
-    CYPRESS_INSTALL_BINARY: /tmp/Cypress
   image: grafana/ci-e2e:12.19.0-1
   name: cypress
   volumes:
@@ -2222,8 +2214,6 @@ steps:
   - yarn run cypress install
   depends_on:
   - package
-  environment:
-    CYPRESS_INSTALL_BINARY: /tmp/Cypress
   image: grafana/ci-e2e:12.19.0-1
   name: cypress
   volumes:
@@ -2686,8 +2676,6 @@ steps:
   - yarn run cypress install
   depends_on:
   - package
-  environment:
-    CYPRESS_INSTALL_BINARY: /tmp/Cypress
   image: grafana/ci-e2e:12.19.0-1
   name: cypress
   volumes:
@@ -3305,8 +3293,6 @@ steps:
   - yarn run cypress install
   depends_on:
   - package
-  environment:
-    CYPRESS_INSTALL_BINARY: /tmp/Cypress
   image: grafana/ci-e2e:12.19.0-1
   name: cypress
   volumes:
@@ -3736,8 +3722,6 @@ steps:
   - yarn run cypress install
   depends_on:
   - package
-  environment:
-    CYPRESS_INSTALL_BINARY: /tmp/Cypress
   image: grafana/ci-e2e:12.19.0-1
   name: cypress
   volumes:
@@ -4131,6 +4115,6 @@ kind: secret
 name: drone_token
 ---
 kind: signature
-hmac: 3a70128bf0d1a980c76fe0271474ac9c257caa60721617a527132dda319cecc1
+hmac: a4caacbc149f977d4c43e2d952bf7e3cf332992f22f416f09720eb499528d6ec
 
 ...

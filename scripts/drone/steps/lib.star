@@ -660,9 +660,6 @@ def install_cypress_step():
         'depends_on': [
             'package',
             ],
-        'environment': {
-            'CYPRESS_INSTALL_BINARY': '/tmp/Cypress',
-        },
         'commands': [
             'yarn run cypress install',
         ],
