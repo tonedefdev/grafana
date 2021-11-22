@@ -259,6 +259,19 @@ export interface TestReceiversResult {
   receivers: TestReceiversResultReceiver[];
 }
 
+export interface ExternalAlertmanagers {
+  activeAlertManagers: AlertmanagerUrl[];
+  droppedAlertManagers: AlertmanagerUrl[];
+}
+
+export interface AlertmanagerUrl {
+  url: string;
+}
+
+export interface ExternalAlertmanagersResponse {
+  data: ExternalAlertmanagers;
+  status: 'string';
+}
 export enum AlertManagerImplementation {
   cortex = 'cortex',
   prometheus = 'prometheus',
