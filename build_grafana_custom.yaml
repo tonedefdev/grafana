@@ -1,0 +1,74 @@
+parameters:
+- name: grafanaVersion
+  displayName: The version of Grafana
+  type: string
+- name: env
+  displayName: The cluster environment
+  type: string
+  default: dev
+  values:
+  - dev
+  - prd
+
+trigger: none
+pr: none
+
+variables:
+  ${{ if eq(parameters.env, 'dev') }}:
+    acrAddress: td043s7qnqf.azurecr.io
+    containerRegistry: dc04-dev-infra-acr
+  ${{ else }}:
+    acrAddress: tp044nbm1fz.azurecr.io
+    containerRegistry: dc04-prd-infra-acr
+  grafanaCustomPlugins: |
+    https://github.com/JamesOsgood/mongodb-grafana/archive/refs/heads/master.zip;mongodb-grafana
+  keyvault: dc04-dev-ptfe0-kv
+  keyvaultSubscription: DEV Terraform Key Vault  
+  prismaConsoleApi: https://us-east1.cloud.twistlock.com/us-2-158254805
+  prismaConsoleSvc: us-east1.cloud.twistlock.com
+
+stages:
+  - stage: create_grafana_custom_image
+    displayName: Create a Grafana Custom Image
+    pool: Azure INFRA RHEL7
+    jobs:
+      - job: Build
+        displayName: Build, Scan, and Push Docker Image
+        steps:
+        - task: AzureKeyVault@1
+          inputs:
+            azureSubscription: $(keyvaultSubscription)
+            KeyVaultName: $(keyvault)
+            SecretsFilter: PRISMA-SECRETKEYS,PRISMA-ACCESSKEYS
+            RunAsPreJob: false
+
+        - task: Docker@2
+          displayName: Build Docker Image
+          name: buildImage
+          inputs:
+            command: build
+            arguments: |
+              --network=host
+              --build-arg "GRAFANA_VERSION=${{ parameters.grafanaVersion }}"
+              --build-arg "GF_INSTALL_PLUGINS=$(grafanaCustomPlugins)"
+            repository: $(acrAddress)/cnb-grafana
+            Dockerfile: ./grafana/Dockerfile
+            addPipelineData: false
+            tags: |
+              ${{ parameters.grafanaVersion }}
+
+        - task: Bash@3
+          displayName: Twistlock Scanning Docker Image
+          inputs:
+            targetType: inline
+            script: |
+              twistcli images scan $(acrAddress)/cnb-grafana:${{ parameters.grafanaVersion }} --address $(prismaConsoleApi) --custom-labels --details --user '$(PRISMA-ACCESSKEYS)' --password '$(PRISMA-SECRETKEYS)'
+
+        - task: Docker@2
+          displayName: Push Docker Image
+          inputs:
+            command: push
+            containerRegistry: $(containerRegistry)
+            repository: cnb-grafana
+            tags: |
+              ${{ parameters.grafanaVersion }}
