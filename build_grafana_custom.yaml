@@ -62,7 +62,7 @@ stages:
               --build-arg "GRAFANA_VERSION=${{ parameters.grafanaVersion }}"
               --build-arg "GF_INSTALL_PLUGINS=$(grafanaCustomPlugins)"
             repository: $(acrAddress)/cnb-grafana
-            Dockerfile: ./grafana/Dockerfile
+            Dockerfile: ./Dockerfile
             addPipelineData: false
             tags: |
               ${{ parameters.grafanaVersion }}
