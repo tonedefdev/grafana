@@ -43,7 +43,7 @@ stages:
           inputs:
             targetType: inline
             script: |
-              git checkout v${{ parameters.grafanaVersion }}
+              git checkout v${{ parameters.grafanaVersion }}-cnb
 
         - task: AzureKeyVault@1
           inputs:
