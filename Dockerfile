@@ -23,7 +23,7 @@ FROM golang:1.17.3-alpine3.14 as go-builder
 RUN apk add --no-cache gcc g++
 RUN apk add -u go
 
-WORKDIR $GOPATH/src/github.com/grafana/grafana
+WORKDIR $GOPATH/src/github.com/tonedefdev/grafana
 
 COPY go.mod go.sum embed.go ./
 COPY cue cue
