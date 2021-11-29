@@ -35,15 +35,14 @@ stages:
       - job: Build
         displayName: Build, Scan, and Push Docker Image
         steps:
-        - checkout: self
-          persistCredentials: true
 
         - task: Bash@3
           displayName: Checkout tag ${{ parameters.grafanaVersion }}
           inputs:
             targetType: inline
             script: |
-              git checkout v${{ parameters.grafanaVersion }}
+              git clone https://github.com/grafana/grafana.git
+              git checkout v{{ parameters.grafanaVersion }}
 
         - task: AzureKeyVault@1
           inputs:
