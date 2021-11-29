@@ -21,7 +21,6 @@ RUN yarn build
 FROM golang:1.17.3-alpine3.14 as go-builder
 
 RUN apk add --no-cache gcc g++
-RUN apk add -u go
 
 WORKDIR $GOPATH/src/github.com/tonedefdev/grafana
 
@@ -34,7 +33,6 @@ COPY pkg pkg
 COPY build.go package.json ./
 
 RUN go mod verify
-RUN go mod tidy
 RUN go run build.go build
 
 # Final stage
