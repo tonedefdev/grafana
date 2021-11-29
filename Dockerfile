@@ -20,7 +20,7 @@ RUN yarn build
 FROM golang:1.17.3-alpine3.14 as go-builder
 
 RUN apk add --no-cache gcc g++
-RUN apk add -u go ncurses
+RUN apk update && apk add -u go ncurses
 
 WORKDIR $GOPATH/src/github.com/grafana/grafana
 
@@ -139,6 +139,8 @@ RUN if [ ! -z "${GF_INSTALL_PLUGINS}" ]; then \
 fi
 
 FROM alpine:3.14.3
+
+RUN apk update && apk add -u ncurses
 
 ARG GF_UID="472"
 ARG GF_GID="0"
