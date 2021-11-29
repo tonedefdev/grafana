@@ -90,7 +90,8 @@ ARG GRAFANA_VERSION="latest"
 
 USER root
 
-RUN apk update && apk add -u bash ncurses
+RUN apk update && apk add -u bash
+RUN apk add ncurses=6.3_p20211127-r0
 
 ARG GF_INSTALL_IMAGE_RENDERER_PLUGIN="false"
 
