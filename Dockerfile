@@ -91,7 +91,6 @@ ARG GRAFANA_VERSION="latest"
 USER root
 
 RUN apk update && apk add -u bash
-RUN apk add -u ncurses=6.3_p20211127-r0
 
 ARG GF_INSTALL_IMAGE_RENDERER_PLUGIN="false"
 
@@ -139,7 +138,7 @@ RUN if [ ! -z "${GF_INSTALL_PLUGINS}" ]; then \
     done \
 fi
 
-FROM alpine:3.14.3
+FROM alpine:3.15
 
 ARG GF_UID="472"
 ARG GF_GID="0"
