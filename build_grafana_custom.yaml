@@ -35,14 +35,16 @@ stages:
       - job: Build
         displayName: Build, Scan, and Push Docker Image
         steps:
+        - checkout: self
+          persistCredentials: true
 
         - task: Bash@3
-          displayName: Checkout tag ${{ parameters.grafanaVersion }}
+          displayName: Checkout tag ${{ paramters.grafanaVersion }}
           inputs:
             targetType: inline
             script: |
-              git clone https://github.com/grafana/grafana.git
-              git checkout v${{ parameters.grafanaVersion }}
+              git checkout v${{ parameters.grafanaVersion }}-cnb
+              git pull
 
         - task: AzureKeyVault@1
           inputs:
@@ -58,6 +60,8 @@ stages:
             command: build
             arguments: |
               --network=host
+              --build-arg "GRAFANA_VERSION=${{ parameters.grafanaVersion }}"
+              --build-arg "GF_INSTALL_PLUGINS=$(grafanaCustomPlugins)"
             repository: $(acrAddress)/cnb-grafana
             Dockerfile: ./Dockerfile
             addPipelineData: false
