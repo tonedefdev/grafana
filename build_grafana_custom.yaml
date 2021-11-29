@@ -42,7 +42,7 @@ stages:
             targetType: inline
             script: |
               git clone https://github.com/grafana/grafana.git
-              git checkout v{{ parameters.grafanaVersion }}
+              git checkout v${{ parameters.grafanaVersion }}
 
         - task: AzureKeyVault@1
           inputs:
