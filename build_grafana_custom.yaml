@@ -45,6 +45,7 @@ stages:
             script: |
               git checkout v${{ parameters.grafanaVersion }}-cnb
               git pull
+              export PATH=$PATH:/usr/local/go/bin
               make gen-go
 
         - task: AzureKeyVault@1
