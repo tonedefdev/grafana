@@ -44,7 +44,6 @@ stages:
             targetType: inline
             script: |
               git checkout v${{ parameters.grafanaVersion }}
-              git pull
 
         - task: AzureKeyVault@1
           inputs:
@@ -60,8 +59,6 @@ stages:
             command: build
             arguments: |
               --network=host
-              --build-arg "GRAFANA_VERSION=${{ parameters.grafanaVersion }}"
-              --build-arg "GF_INSTALL_PLUGINS=$(grafanaCustomPlugins)"
             repository: $(acrAddress)/cnb-grafana
             Dockerfile: ./Dockerfile
             addPipelineData: false
