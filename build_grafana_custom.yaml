@@ -39,7 +39,7 @@ stages:
           persistCredentials: true
 
         - task: Bash@3
-          displayName: Checkout tag ${{ paramters.grafanaVersion }}
+          displayName: Checkout tag ${{ parameters.grafanaVersion }}
           inputs:
             targetType: inline
             script: |
